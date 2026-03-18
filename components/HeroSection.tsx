@@ -215,7 +215,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <span className="text-[10px] font-mono text-primary/40 uppercase tracking-widest">Creative Developer</span>
             </div>
             <h1 className="text-[18vw] md:text-[12vw] lg:text-[9vw] font-black text-primary leading-[0.85] tracking-tighter animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              YOUNG
+              AVABBBB
             </h1>
             <div className="flex items-center gap-4 mt-2 md:mt-3">
               <div className="flex-1 h-px bg-primary/20" />
@@ -287,7 +287,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         
         {/* Info Row - 移动端隐藏 */}
         <div className="hidden md:flex justify-between items-center text-[10px] tracking-widest uppercase text-primary/40 px-6 py-2 md:py-3 border-b border-primary/10">
-          <span className="font-mono">YOUNG—PORTFOLIO</span>
+          <span className="font-mono">AVABBBB—PORTFOLIO</span>
           <span className="hidden md:block">{language === 'zh' ? '设计 / 开发 / 创意' : 'DESIGN / DEV / CREATIVE'}</span>
           <span className="font-mono">©2025</span>
         </div>

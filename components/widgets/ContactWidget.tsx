@@ -31,15 +31,15 @@ export const ContactWidget: React.FC<ContactWidgetProps> = ({ language, onCopyEm
     {
       icon: <Mail size={14} />,
       label: t.email,
-      value: 'leeyoung0821@163.com',
+      value: '921693422@qq.com',
       action: onCopyEmail,
       color: 'text-primary',
     },
     {
       icon: <Github size={14} />,
       label: t.github,
-      value: '@Qitm2333',
-      action: () => window.open('https://github.com/Qitm2333', '_blank'),
+      value: '@Paker-kk',
+      action: () => window.open('https://github.com/Paker-kk', '_blank'),
       color: 'text-primary',
     },
     {
@@ -49,8 +49,8 @@ export const ContactWidget: React.FC<ContactWidgetProps> = ({ language, onCopyEm
         </svg>
       ),
       label: t.redbook,
-      value: '@off-key',
-      action: () => window.open('https://www.xiaohongshu.com/user/profile/60d4557f00000000010083bc', '_blank'),
+      value: '@avabbbb',
+      action: () => window.open('https://www.xiaohongshu.com/user/profile/5ef7232b00000000010069bf', '_blank'),
       color: 'text-[#EC4048]',
     },
   ];

@@ -25,38 +25,38 @@ export interface ContactContent {
 export const CONTACT_DATA: Record<Language, ContactContent> = {
   zh: {
     baseLabel: "BASE",
-    locationValue: "广东，珠海",
+    locationValue: "广东，深圳",
     contactLabel: "取得联系",
     emailMeLabel: "邮箱",
-    email: "young@126.com",
+    email: "921693422@qq.com",
     hello: "你好 ;-)",
     intro: "欢迎探讨与合作。",
     socials: {
-      wechat: "Young的实验房",
-      xiaohongshu: "Young",
-      bilibili: "Young",
-      px500: "Young",
-      liblib: "QM_L"
+      wechat: "avabbbb",
+      xiaohongshu: "avabbbb",
+      bilibili: "avabbbb",
+      px500: "",
+      liblib: ""
     },
     githubLabel: "GitHub",
-    footerDesign: "Powered by Gemini 3 Pro"
+    footerDesign: "Powered by avabbbb"
   },
   en: {
     baseLabel: "BASE",
-    locationValue: "Zhuhai, Guangdong",
+    locationValue: "Shenzhen, Guangdong",
     contactLabel: "Get in touch",
     emailMeLabel: "Email Me",
-    email: "young@126.com",
+    email: "921693422@qq.com",
     hello: "Hello ;-)",
     intro: "Welcome to discuss & cooperate.",
     socials: {
-      wechat: "Young's Lab",
-      xiaohongshu: "Young",
-      bilibili: "Young",
-      px500: "Young",
-      liblib: "QM_L"
+      wechat: "avabbbb",
+      xiaohongshu: "avabbbb",
+      bilibili: "avabbbb",
+      px500: "",
+      liblib: ""
     },
     githubLabel: "GitHub",
-    footerDesign: "Powered by Gemini 3 Pro"
+    footerDesign: "Powered by avabbbb"
   }
 };

@@ -181,7 +181,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
             {/* 底部信息 */}
             <div className="border-t border-primary/10 pt-4 mt-8">
               <div className="text-[10px] font-mono text-primary/30 uppercase tracking-widest">
-                © 2025 YOUNG
+                © 2026 AVABBBB
               </div>
             </div>
           </div>

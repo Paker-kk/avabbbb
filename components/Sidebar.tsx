@@ -56,11 +56,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div
           className={`cursor-pointer mb-8 transition-all select-none ${editorMode ? 'text-[#E63946]' : ''}`}
           onClick={() => onLogoClick?.()}
-          title={editorMode ? (language === 'zh' ? '编辑模式已开启' : 'Editor Mode ON') : 'YOUNG'}
+          title={editorMode ? (language === 'zh' ? '编辑模式已开启' : 'Editor Mode ON') : 'AVABBBB'}
         >
           <span className={`text-sm font-black tracking-tighter leading-none select-none ${editorMode ? 'text-[#E63946]' : 'text-primary'}`}
                 style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
-            YOUNG
+            AVABBBB
           </span>
         </div>
 

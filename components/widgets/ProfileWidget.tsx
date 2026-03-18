@@ -11,17 +11,17 @@ export const ProfileWidget: React.FC<ProfileWidgetProps> = ({ language, onCopyEm
   const content = {
     zh: {
       title: '个人名片',
-      name: 'Young',
-      status: '自由职业设计师',
-      education: '东北林业大学 · 工业设计',
+      name: 'avabbbb',
+      status: 'AIGC产研工程师',
+      education: '华南师范大学 · 软件工程',
       email: '邮箱',
       copyBtn: '复制',
     },
     en: {
       title: 'Profile Card',
-      name: 'Young',
-      status: 'Freelance Designer',
-      education: 'NEFU · Industrial Design',
+      name: 'avabbbb',
+      status: 'AIGC R&D Engineer',
+      education: 'SCNU · Software Engineering',
       email: 'Email',
       copyBtn: 'Copy',
     },
@@ -60,7 +60,7 @@ export const ProfileWidget: React.FC<ProfileWidgetProps> = ({ language, onCopyEm
         >
           <div className="flex items-center gap-2">
             <Mail size={12} className="text-primary/40 group-hover:text-primary" />
-            <span className="text-xs text-primary/60 group-hover:text-primary font-mono">leeyoung0821@163.com</span>
+            <span className="text-xs text-primary/60 group-hover:text-primary font-mono">921693422@qq.com</span>
           </div>
           <span className="text-[10px] text-primary/30 group-hover:text-primary uppercase">{t.copyBtn}</span>
         </div>

@@ -31,17 +31,15 @@ interface ArticleEditorProps {
 }
 
 const CATEGORY_OPTIONS = [
-  { value: ArticleCategory.QUALITY, labelZh: 'Quality', labelEn: 'Quality' },
-  { value: ArticleCategory.RURALIT, labelZh: 'Ruralit', labelEn: 'Ruralit' },
-  { value: ArticleCategory.TRACES, labelZh: 'Traces of Presence', labelEn: 'Traces of Presence' },
-  { value: ArticleCategory.CUBTHARSIS, labelZh: 'Cubtharsis', labelEn: 'Cubtharsis' },
+  { value: ArticleCategory.MAKINGLOVART, labelZh: 'MakingLovart', labelEn: 'MakingLovart' },
+  { value: ArticleCategory.VIDEOCREATION, labelZh: '视频创作', labelEn: 'Video Creation' },
 ];
 
 // 创建空白文章模板
 export const createEmptyArticle = (id: string): EditableArticle => ({
   id,
   common: {
-    category: ArticleCategory.QUALITY,
+    category: ArticleCategory.MAKINGLOVART,
     link: '',
     coverImage: '',
     date: new Date().toISOString().slice(0, 10),

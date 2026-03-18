@@ -1019,7 +1019,7 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
           <div className="h-[1px] bg-primary/10 flex-shrink-0" />
           <div className="text-xs text-primary/30 p-4 flex-shrink-0 flex justify-between">
             <span>{selectedProject.date || ''}</span>
-            <span>© 2024 YOUNG</span>
+            <span>© 2026 AVABBBB</span>
           </div>
         </aside>,
         document.body

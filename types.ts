@@ -13,10 +13,8 @@ export enum Category {
 }
 
 export enum ArticleCategory {
-  QUALITY = 'Quality',
-  RURALIT = 'Ruralit',
-  TRACES = 'TracesOfPresence',
-  CUBTHARSIS = 'Cubtharsis',
+  MAKINGLOVART = 'MakingLovart',
+  VIDEOCREATION = 'VideoCreation',
 }
 
 export interface Article {

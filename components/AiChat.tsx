@@ -59,8 +59,8 @@ const callDeepSeekAPI = async (
   if (!DEEPSEEK_API_KEY) {
     await new Promise(resolve => setTimeout(resolve, 800));
     return language === 'zh' 
-      ? '你好！我是 Young 的 AI 助手。目前 API 尚未配置，请联系 Young 获取更多信息。邮箱：leeyoung0821@163.com'
-      : "Hi! I'm Young's AI assistant. The API is not configured yet. Please contact Young for more info. Email: leeyoung0821@163.com";
+      ? '你好！我是 avabbbb 的 AI 助手。目前 API 尚未配置，请联系 avabbbb 获取更多信息。邮箱：921693422@qq.com'
+      : "Hi! I'm avabbbb's AI assistant. The API is not configured yet. Please contact avabbbb for more info. Email: 921693422@qq.com";
   }
 
   try {
@@ -199,12 +199,12 @@ export const AiChat: React.FC<AiChatProps> = ({
   // 复制邮箱
   const handleCopyEmail = async () => {
     try {
-      await navigator.clipboard.writeText('leeyoung0821@163.com');
+      await navigator.clipboard.writeText('921693422@qq.com');
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       const textArea = document.createElement('textarea');
-      textArea.value = 'leeyoung0821@163.com';
+      textArea.value = '921693422@qq.com';
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
@@ -319,8 +319,8 @@ export const AiChat: React.FC<AiChatProps> = ({
               </h4>
               <p className="text-xs text-primary/50 mb-6">
                 {language === 'zh' 
-                  ? '我可以回答关于 Young 的作品、技能和经历的问题'
-                  : "I can answer questions about Young's work, skills, and experience"}
+                  ? '我可以回答关于 avabbbb 的作品、技能和经历的问题'
+                  : "I can answer questions about avabbbb's work, skills, and experience"}
               </p>
               
               {/* 快捷问题 */}

@@ -57,7 +57,7 @@ function AppContent() {
   const [language, setLanguage] = useState<Language>('en');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   
-  // 编辑模式：连续点击4次 YOUNG logo 激活
+  // 编辑模式：连续点击4次 logo 激活
   const [editorMode, setEditorMode] = useState(false);
   const logoClickCountRef = useRef(0);
   const logoClickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -108,13 +108,13 @@ function AppContent() {
   // 复制邮箱并显示反馈
   const handleCopyEmail = async () => {
     try {
-      await navigator.clipboard.writeText('1445531071@qq.com');
+      await navigator.clipboard.writeText('921693422@qq.com');
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       // 降级方案：使用传统方式复制
       const textArea = document.createElement('textarea');
-      textArea.value = '1445531071@qq.com';
+      textArea.value = '921693422@qq.com';
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
@@ -290,7 +290,7 @@ function AppContent() {
                       <Mail size={16} className={copySuccess ? 'text-[#07C160]' : 'text-primary/50'} />
                       <div>
                         <p className={`text-xs font-bold ${copySuccess ? 'text-[#07C160]' : 'text-primary'}`}>{language === 'zh' ? '邮箱' : 'Email'}</p>
-                        <p className="font-mono text-[10px] text-primary/40">1445531071@qq.com</p>
+                        <p className="font-mono text-[10px] text-primary/40">921693422@qq.com</p>
                       </div>
                     </div>
                     <span className={`font-mono text-[10px] ${copySuccess ? 'text-[#07C160]' : 'text-primary/30'}`}>
@@ -301,14 +301,14 @@ function AppContent() {
                   {/* GitHub */}
                   <div 
                     className="flex items-center justify-between px-4 py-3 border-b border-primary/20 cursor-pointer active:bg-primary/5 transition-colors"
-                    onClick={() => window.open('https://github.com/Qitm2333', '_blank')}
+                    onClick={() => window.open('https://github.com/Paker-kk', '_blank')}
                   >
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-[10px] text-primary/30 w-4">02</span>
                       <Github size={16} className="text-primary/50" />
                       <div>
                         <p className="text-xs font-bold text-primary">GitHub</p>
-                        <p className="font-mono text-[10px] text-primary/40">@Qitm2333</p>
+                        <p className="font-mono text-[10px] text-primary/40">@Paker-kk</p>
                       </div>
                     </div>
                     <span className="font-mono text-[10px] text-primary/30">↗</span>
@@ -317,7 +317,7 @@ function AppContent() {
                   {/* 小红书 */}
                   <div 
                     className="flex items-center justify-between px-4 py-3 border-b border-primary/20 cursor-pointer active:bg-primary/5 transition-colors"
-                    onClick={() => window.open('https://www.xiaohongshu.com/user/profile/60d4557f00000000010083bc', '_blank')}
+                    onClick={() => window.open('https://www.xiaohongshu.com/user/profile/5ef7232b00000000010069bf', '_blank')}
                   >
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-[10px] text-primary/30 w-4">03</span>
@@ -326,16 +326,16 @@ function AppContent() {
                       </svg>
                       <div>
                         <p className="text-xs font-bold text-primary">{language === 'zh' ? '小红书' : 'RedNote'}</p>
-                        <p className="font-mono text-[10px] text-primary/40">@off-key</p>
+                        <p className="font-mono text-[10px] text-primary/40">@avabbbb</p>
                       </div>
                     </div>
                     <span className="font-mono text-[10px] text-primary/30">↗</span>
                   </div>
                   
-                  {/* 网易云 */}
+                  {/* B站 */}
                   <div 
                     className="flex items-center justify-between px-4 py-3 cursor-pointer active:bg-primary/5 transition-colors"
-                    onClick={() => window.open('https://y.music.163.com/m/user?id=95054416', '_blank')}
+                    onClick={() => window.open('https://space.bilibili.com/', '_blank')}
                   >
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-[10px] text-primary/30 w-4">04</span>
@@ -343,8 +343,8 @@ function AppContent() {
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
                       </svg>
                       <div>
-                        <p className="text-xs font-bold text-primary">{language === 'zh' ? '网易云音乐' : 'NetEase Music'}</p>
-                        <p className="font-mono text-[10px] text-primary/40">@Qitm</p>
+                        <p className="text-xs font-bold text-primary">{language === 'zh' ? 'B站' : 'Bilibili'}</p>
+                        <p className="font-mono text-[10px] text-primary/40">@avabbbb</p>
                       </div>
                     </div>
                     <span className="font-mono text-[10px] text-primary/30">↗</span>
@@ -454,7 +454,7 @@ function AppContent() {
                       <Mail size={18} className={`transition-colors ${copySuccess ? 'text-[#07C160]' : 'text-primary/40 group-hover:text-[#E63946]'}`} />
                       <div>
                         <h3 className={`font-bold transition-colors ${copySuccess ? 'text-[#07C160]' : 'text-primary group-hover:text-[#E63946]'}`}>{language === 'zh' ? '邮箱' : 'Email'}</h3>
-                        <p className="font-mono text-xs text-primary/40">1445531071@qq.com</p>
+                        <p className="font-mono text-xs text-primary/40">921693422@qq.com</p>
                       </div>
                     </div>
                     <span className={`font-mono text-[10px] transition-colors ${copySuccess ? 'text-[#07C160]' : 'text-primary/30 group-hover:text-[#E63946]'}`}>
@@ -466,7 +466,7 @@ function AppContent() {
                   <div 
                     className="group border-b border-primary/10 py-5 px-8 flex items-center justify-between cursor-pointer hover:bg-[#EC4048]/5 transition-all duration-300 animate-fade-in"
                     style={{ animationDelay: '0.3s' }}
-                    onClick={() => window.open('https://www.xiaohongshu.com/user/profile/60d4557f00000000010083bc', '_blank')}
+                    onClick={() => window.open('https://www.xiaohongshu.com/user/profile/5ef7232b00000000010069bf', '_blank')}
                   >
                     <div className="flex items-center gap-4">
                       <span className="font-mono text-[10px] text-primary/30">02</span>
@@ -475,7 +475,7 @@ function AppContent() {
                       </svg>
                       <div>
                         <h3 className="font-bold text-primary group-hover:text-[#EC4048] transition-colors">{language === 'zh' ? '小红书' : 'RedNote'}</h3>
-                        <p className="font-mono text-xs text-primary/40">@off-key</p>
+                        <p className="font-mono text-xs text-primary/40">@avabbbb</p>
                       </div>
                     </div>
                     <span className="font-mono text-[10px] text-primary/30 group-hover:text-[#EC4048] transition-colors">→</span>
@@ -485,55 +485,36 @@ function AppContent() {
                   <div 
                     className="group border-b border-primary/10 py-5 px-8 flex items-center justify-between cursor-pointer hover:bg-[#E63946]/5 transition-all duration-300 animate-fade-in"
                     style={{ animationDelay: '0.4s' }}
-                    onClick={() => window.open('https://github.com/Qitm2333', '_blank')}
+                    onClick={() => window.open('https://github.com/Paker-kk', '_blank')}
                   >
                     <div className="flex items-center gap-4">
                       <span className="font-mono text-[10px] text-primary/30">03</span>
                       <Github size={18} className="text-primary/40 group-hover:text-[#E63946] transition-colors" />
                       <div>
                         <h3 className="font-bold text-primary group-hover:text-[#E63946] transition-colors">GitHub</h3>
-                        <p className="font-mono text-xs text-primary/40">@Qitm2333</p>
+                        <p className="font-mono text-xs text-primary/40">@Paker-kk</p>
                       </div>
                     </div>
                     <span className="font-mono text-[10px] text-primary/30 group-hover:text-[#E63946] transition-colors">→</span>
                   </div>
 
-                  {/* 04 - 网易云音乐 */}
+                  {/* 04 - B站 */}
                   <div 
-                    className="group border-b border-primary/10 py-5 px-8 flex items-center justify-between cursor-pointer hover:bg-[#C20C0C]/5 transition-all duration-300 animate-fade-in"
+                    className="group border-b border-primary/10 py-5 px-8 flex items-center justify-between cursor-pointer hover:bg-[#00A1D6]/5 transition-all duration-300 animate-fade-in"
                     style={{ animationDelay: '0.5s' }}
-                    onClick={() => window.open('https://y.music.163.com/m/user?id=95054416', '_blank')}
+                    onClick={() => window.open('https://space.bilibili.com/', '_blank')}
                   >
                     <div className="flex items-center gap-4">
                       <span className="font-mono text-[10px] text-primary/30">04</span>
-                      <svg className="w-[18px] h-[18px] text-primary/40 group-hover:text-[#C20C0C] transition-colors" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
+                      <svg className="w-[18px] h-[18px] text-primary/40 group-hover:text-[#00A1D6] transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386z"/>
                       </svg>
                       <div>
-                        <h3 className="font-bold text-primary group-hover:text-[#C20C0C] transition-colors">{language === 'zh' ? '网易云音乐' : 'NetEase Music'}</h3>
-                        <p className="font-mono text-xs text-primary/40">@Qitm</p>
+                        <h3 className="font-bold text-primary group-hover:text-[#00A1D6] transition-colors">{language === 'zh' ? 'B站' : 'Bilibili'}</h3>
+                        <p className="font-mono text-xs text-primary/40">@avabbbb</p>
                       </div>
                     </div>
-                    <span className="font-mono text-[10px] text-primary/30 group-hover:text-[#C20C0C] transition-colors">→</span>
-                  </div>
-
-                  {/* 05 - LibLib */}
-                  <div 
-                    className="group py-5 px-8 flex items-center justify-between cursor-pointer hover:bg-[#E63946]/5 transition-all duration-300 animate-fade-in"
-                    style={{ animationDelay: '0.6s' }}
-                    onClick={() => window.open('https://www.liblib.art/userpage/4b7bd42292f840e2a3aca5a90c8fbf8f/publish', '_blank')}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="font-mono text-[10px] text-primary/30">05</span>
-                      <svg className="w-[18px] h-[18px] text-primary/40 group-hover:text-[#E63946] transition-colors" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                      </svg>
-                      <div>
-                        <h3 className="font-bold text-primary group-hover:text-[#E63946] transition-colors">LibLib</h3>
-                        <p className="font-mono text-xs text-primary/40">@QM_L</p>
-                      </div>
-                    </div>
-                    <span className="font-mono text-[10px] text-primary/30 group-hover:text-[#E63946] transition-colors">→</span>
+                    <span className="font-mono text-[10px] text-primary/30 group-hover:text-[#00A1D6] transition-colors">→</span>
                   </div>
                 </div>
               </div>
@@ -543,9 +524,9 @@ function AppContent() {
             <div className="relative z-10 border-t-2 border-primary flex-shrink-0">
               {/* Info Row - 移动端隐藏 */}
               <div className="hidden md:flex justify-between items-center text-[10px] tracking-widest uppercase text-primary/40 px-6 py-2 md:py-3 border-b border-primary/10">
-                <span className="font-mono">YOUNG—CONTACT</span>
-                <span className="hidden md:block">{language === 'zh' ? '邮箱 / 社交 / 音乐' : 'EMAIL / SOCIAL / MUSIC'}</span>
-                <span className="font-mono">©2025</span>
+                <span className="font-mono">AVABBBB—CONTACT</span>
+                <span className="hidden md:block">{language === 'zh' ? '邮箱 / 社交 / 视频' : 'EMAIL / SOCIAL / VIDEO'}</span>
+                <span className="font-mono">©2026</span>
               </div>
 
               {/* Black CTA Bar */}
@@ -563,7 +544,7 @@ function AppContent() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[10px] font-mono text-cream/40 hidden md:block">1445531071@qq.com</span>
+                  <span className="text-[10px] font-mono text-cream/40 hidden md:block">921693422@qq.com</span>
                   <Mail size={20} className="group-hover:scale-110 transition-transform" />
                 </div>
               </div>

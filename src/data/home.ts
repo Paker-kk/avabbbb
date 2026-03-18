@@ -16,26 +16,26 @@ export interface HomeContent {
 export const HOME_DATA: Record<Language, HomeContent> = {
   zh: {
     heroItems: [
-      { text: "动态媒体", annotation: "（积累较多）", category: Category.VIDEO },
-      { text: "交互设计", annotation: "（干起来体面）", category: Category.UI },
-      { text: "应用开发", annotation: "（vibe coding）", category: Category.DEV },
-      { text: "游戏设计", annotation: "（谁来带我）", category: null },
-      { text: "音乐", annotation: "（已被AI肘飞）", category: null }
+      { text: "AIGC开发", annotation: "（创意工具）", category: Category.DEV },
+      { text: "视频创作", annotation: "（二创/特效）", category: Category.VIDEO },
+      { text: "软件工程", annotation: "（本职工作）", category: Category.DEV },
+      { text: "AI短剧", annotation: "（AVG探索中）", category: null },
+      { text: "社交媒体", annotation: "（小红书/B站）", category: null }
     ],
-    intro: "不懂设计的摄影师不是一个好的产品经理。|边学边做，MVP生活，迈向全栈，但更看重实际价值。",
+    intro: "AI AVG制作探索中。|华南师范大学软件工程毕业，央企AIGC产研工程师，业余创作者。",
     selectedWorks: "精选作品",
-    years: "[ 2021 — 2025 ]"
+    years: "[ 2025 — NOW ]"
   },
   en: {
     heroItems: [
-      { text: "Motion Media", annotation: "(Extensive Portfolio)", category: Category.VIDEO },
-      { text: "UI/UX", annotation: "(Decent Career Path)", category: Category.UI },
-      { text: "Development", annotation: "(Vibe Coding)", category: Category.DEV },
-      { text: "Game Design", annotation: "(Looking for Mentor)", category: null },
-      { text: "Music", annotation: "(Replaced by AI)", category: null }
+      { text: "AIGC Dev", annotation: "(Creative Tools)", category: Category.DEV },
+      { text: "Video Creation", annotation: "(Fan-made/VFX)", category: Category.VIDEO },
+      { text: "Software Eng", annotation: "(Day Job)", category: Category.DEV },
+      { text: "AI AVG", annotation: "(Exploring)", category: null },
+      { text: "Social Media", annotation: "(XHS/Bilibili)", category: null }
     ],
-    intro: "A photographer who doesn't understand design is not a good product manager. | Learning by doing, living the MVP life, aiming for full-stack, but valuing actual impact above all.",
+    intro: "Exploring AI AVG production. | SCNU Software Engineering graduate, AIGC R&D engineer at a state-owned enterprise, indie creator.",
     selectedWorks: "Selected Works",
-    years: "[ 2021 — 2025 ]"
+    years: "[ 2025 — NOW ]"
   }
 };
