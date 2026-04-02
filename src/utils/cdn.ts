@@ -26,6 +26,11 @@ export function toJsDelivr(url: string): string {
     return cleanUrl;
   }
   
+  // 如果是本地路径（如 /MakingLovart.png），直接返回
+  if (cleanUrl.startsWith('/')) {
+    return cleanUrl;
+  }
+  
   // 移除协议前缀（兼容旧格式）
   cleanUrl = cleanUrl.replace(/^https?:\/\//, '');
   

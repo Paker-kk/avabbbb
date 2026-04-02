@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { HeroSection } from './components/HeroSection';
 import { PortfolioSection } from './components/PortfolioSection';
@@ -659,10 +659,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/*" element={<AppContent />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }

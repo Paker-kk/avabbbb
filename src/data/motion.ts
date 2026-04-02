@@ -5,7 +5,7 @@ export const MOTION_DATA: Project[] = [
   "id": "v1",
   "common": {
     "category": "Motion",
-    "image": "/video-fancreation.png",
+    "image": "",
     "bilibiliId": "BV1pS411K7bF",
     "websiteUrl": "https://www.bilibili.com/video/BV1pS411K7bF/",
     "date": "2025"
@@ -59,7 +59,7 @@ export const MOTION_DATA: Project[] = [
   "id": "v2",
   "common": {
     "category": "Motion",
-    "image": "/video-aigc-annual.png",
+    "image": "",
     "date": "2025"
   },
   "zh": {
