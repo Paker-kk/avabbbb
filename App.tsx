@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { HeroSection } from './components/HeroSection';
 import { PortfolioSection } from './components/PortfolioSection';
 import { ArticleSection } from './components/ArticleSection';
 import { TimelineSection } from './components/TimelineSection';
+import { ResumeSection } from './components/ResumeSection';
 import { AiChat } from './components/AiChat';
 import { Mail, Github, Bot } from 'lucide-react';
 
@@ -36,6 +38,7 @@ function AppContent() {
     if (pathname === '/home' || pathname === '/') return 'dashboard';
     if (pathname.startsWith('/portfolio')) return 'portfolio';
     if (pathname.startsWith('/articles')) return 'articles';
+    if (pathname === '/resume') return 'resume';
     if (pathname === '/about') return 'about';
     if (pathname === '/contact') return 'contact';
     return 'dashboard';
@@ -48,6 +51,7 @@ function AppContent() {
       'dashboard': '/home',
       'portfolio': '/portfolio',
       'articles': '/articles',
+      'resume': '/resume',
       'about': '/about',
       'contact': '/contact'
     };
@@ -233,6 +237,14 @@ function AppContent() {
       case 'about':
         return (
           <TimelineSection 
+            language={language}
+            onOpenAiChat={() => setIsAiChatOpen(true)}
+            onToggleLanguage={toggleLanguage}
+          />
+        );
+      case 'resume':
+        return (
+          <ResumeSection
             language={language}
             onOpenAiChat={() => setIsAiChatOpen(true)}
             onToggleLanguage={toggleLanguage}
@@ -549,8 +561,8 @@ function AppContent() {
                 </div>
               </div>
               
-              {/* 移动端底部导航栏占位 */}
-              <div className="h-12 md:hidden bg-cream" />
+              {/* 移动端底部导航栏占位 - 为底部TabBar留出安全间距 */}
+              <div className="h-16 md:hidden bg-cream" />
             </div>
           </div>
         )
@@ -628,10 +640,17 @@ function AppContent() {
 
       {/* Main Content Area - Offset for narrow left sidebar on desktop */}
       <main className="w-full md:pl-14 vt-page relative">
-         
-         <div key={activeTab}>
-           {renderContent()}
-         </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15, ease: 'easeInOut' }}
+          >
+            {renderContent()}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* 首次访问引导气泡 */}

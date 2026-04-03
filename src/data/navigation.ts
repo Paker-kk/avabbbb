@@ -5,6 +5,7 @@ export const NAV_ITEMS: Record<Language, { id: string; label: string }[]> = {
     { id: 'dashboard', label: '主页' },
     { id: 'portfolio', label: '作品' },
     { id: 'articles', label: '文章' },
+    { id: 'resume', label: '简历' },
     { id: 'about', label: '教育' },
     { id: 'contact', label: '联系' }
   ],
@@ -12,6 +13,7 @@ export const NAV_ITEMS: Record<Language, { id: string; label: string }[]> = {
     { id: 'dashboard', label: 'Home' },
     { id: 'portfolio', label: 'Portfolio' },
     { id: 'articles', label: 'Articles' },
+    { id: 'resume', label: 'Resume' },
     { id: 'about', label: 'Education' },
     { id: 'contact', label: 'Contact' }
   ]

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { createPortal } from 'react-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { PROJECTS, CATEGORY_LABELS } from '../constants';
@@ -20,7 +21,6 @@ const TranslateIcon: React.FC<{ size?: number; className?: string }> = ({ size =
 );
 import { ProjectEditor, EditableProject, createEmptyProject } from './ProjectEditor';
 import { toJsDelivr } from '../src/utils/cdn';
-import { PRACTICE_ITEMS, PRACTICE_LAYOUT } from '../src/data/practice';
 
 // 带骨架屏的图片组件
 interface SkeletonImageProps {
@@ -138,237 +138,21 @@ interface PortfolioSectionProps {
 const FILTER_ITEMS = [
   { id: 'All', labelZh: '全部', labelEn: 'All', urlPath: 'all' },
   { id: Category.VIDEO, labelZh: '动态影像', labelEn: 'Media', urlPath: 'motion' },
-  { id: Category.UI, labelZh: '交互设计', labelEn: 'UI/UX', urlPath: 'uiux' },
-  { id: Category.GRAPHIC, labelZh: '平面设计', labelEn: 'Graphic', urlPath: 'graphic' },
   { id: Category.DEV, labelZh: '应用开发', labelEn: 'Dev', urlPath: 'dev' },
-  { id: Category.PHOTO, labelZh: '静态摄影', labelEn: 'Photo', urlPath: 'photo' },
 ];
 
 // URL 路径到分类的映射
 const URL_TO_CATEGORY: Record<string, string> = {
   'all': 'All',
   'motion': Category.VIDEO,
-  'uiux': Category.UI,
-  'graphic': Category.GRAPHIC,
   'dev': Category.DEV,
-  'photo': Category.PHOTO,
-  'practice': Category.PRACTICE,
 };
 
 // 分类到 URL 路径的映射
 const CATEGORY_TO_URL: Record<string, string> = {
   'All': 'all',
   [Category.VIDEO]: 'motion',
-  [Category.UI]: 'uiux',
-  [Category.GRAPHIC]: 'graphic',
   [Category.DEV]: 'dev',
-  [Category.PHOTO]: 'photo',
-  [Category.PRACTICE]: 'practice',
-};
-
-// 日常练习数据类型
-interface PracticeItem {
-  id: string;
-  type: 'image' | 'video';
-  url: string;
-}
-
-type PracticeLayout = 'grid-3' | 'grid-4' | 'grid-5';
-
-// 日常练习展示组件
-// 随机打乱数组
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
-
-// 在模块级别缓存随机排序结果，避免每次组件挂载时重新随机
-const cachedShuffledItems = shuffleArray(PRACTICE_ITEMS.map(item => ({ ...item, type: item.type as 'image' | 'video' })));
-
-const PracticeGallery: React.FC<{ language: Language; editorMode?: boolean }> = ({ language, editorMode = false }) => {
-  // 使用缓存的随机排序结果
-  const [items, setItems] = useState<PracticeItem[]>(cachedShuffledItems);
-  const [layout, setLayout] = useState<PracticeLayout>(PRACTICE_LAYOUT as PracticeLayout);
-  const [isEditing, setIsEditing] = useState(false);
-  const [newUrl, setNewUrl] = useState('');
-  const [newType, setNewType] = useState<'image' | 'video'>('image');
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-
-  const addItems = () => {
-    if (!newUrl.trim()) return;
-    // 支持多行输入，每行一个 URL
-    const urls = newUrl.split('\n').map(u => u.trim()).filter(u => u);
-    const newItems: PracticeItem[] = urls.map((url, i) => ({
-      id: `practice_${Date.now()}_${i}`,
-      type: newType,
-      url
-    }));
-    setItems([...items, ...newItems]);
-    setNewUrl('');
-  };
-
-  const removeItem = (id: string) => {
-    setItems(items.filter(item => item.id !== id));
-  };
-
-  const exportJSON = () => {
-    const data = { items, layout };
-    const json = JSON.stringify(data, null, 2);
-    navigator.clipboard.writeText(json);
-    alert(language === 'zh' ? 'JSON 已复制到剪贴板' : 'JSON copied to clipboard');
-  };
-
-  const getGridClass = () => {
-    switch (layout) {
-      case 'grid-3': return 'grid-cols-1 md:grid-cols-3';
-      case 'grid-5': return 'grid-cols-2 md:grid-cols-5';
-      default: return 'grid-cols-2 md:grid-cols-4';
-    }
-  };
-
-  return (
-    <div>
-      {/* 标题栏 */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-black text-primary">
-          {language === 'zh' ? '日常练习' : 'Practice'}
-        </h2>
-        {editorMode && (
-          <div className="flex items-center gap-2">
-            {isEditing && (
-              <button
-                onClick={exportJSON}
-                className="px-3 py-1.5 text-xs border border-primary/20 text-primary hover:bg-primary hover:text-cream transition-colors"
-              >
-                {language === 'zh' ? '导出JSON' : 'Export JSON'}
-              </button>
-            )}
-            <button
-              onClick={() => setIsEditing(!isEditing)}
-              className="flex items-center gap-1 px-3 py-1.5 text-xs bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-            >
-              <Pencil size={12} />
-              {isEditing ? (language === 'zh' ? '完成' : 'Done') : (language === 'zh' ? '编辑' : 'Edit')}
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* 编辑面板 */}
-      {isEditing && (
-        <div className="mb-6 p-4 border border-primary/20 bg-primary/5 space-y-3">
-          <div className="flex gap-2 items-start">
-            <select
-              value={newType}
-              onChange={(e) => setNewType(e.target.value as 'image' | 'video')}
-              className="px-3 py-2 border border-primary/20 bg-cream text-sm"
-            >
-              <option value="image">{language === 'zh' ? '图片' : 'Image'}</option>
-              <option value="video">{language === 'zh' ? '视频' : 'Video'}</option>
-            </select>
-            <textarea
-              value={newUrl}
-              onChange={(e) => setNewUrl(e.target.value)}
-              placeholder={language === 'zh' ? '输入URL，每行一个...' : 'Enter URLs, one per line...'}
-              className="flex-1 px-3 py-2 border border-primary/20 bg-cream text-sm min-h-[80px] resize-y"
-              rows={3}
-            />
-            <button
-              onClick={addItems}
-              className="px-4 py-2 bg-primary text-cream text-sm hover:bg-primary/80 transition-colors"
-            >
-              {language === 'zh' ? '添加' : 'Add'}
-            </button>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-primary/60">{language === 'zh' ? '布局：' : 'Layout:'}</span>
-            <select
-              value={layout}
-              onChange={(e) => setLayout(e.target.value as PracticeLayout)}
-              className="px-3 py-1.5 border border-primary/20 bg-cream text-sm"
-            >
-              <option value="grid-3">{language === 'zh' ? '3列' : '3 Columns'}</option>
-              <option value="grid-4">{language === 'zh' ? '4列' : '4 Columns'}</option>
-              <option value="grid-5">{language === 'zh' ? '5列' : '5 Columns'}</option>
-            </select>
-          </div>
-          <p className="text-xs text-primary/50">
-            {language === 'zh' ? '支持 GitHub raw 链接，会自动转换为 CDN 链接' : 'Supports GitHub raw links, auto-converted to CDN'}
-          </p>
-        </div>
-      )}
-
-      {/* 内容网格 - 3列瀑布流 */}
-      {items.length === 0 ? (
-        <div className="text-center py-20 text-primary/40">
-          {language === 'zh' ? '暂无内容，点击编辑添加' : 'No content yet, click Edit to add'}
-        </div>
-      ) : (
-        <div className="flex gap-4">
-          {/* 分成3列 */}
-          {[0, 1, 2].map(colIndex => (
-            <div key={colIndex} className="flex-1 flex flex-col gap-4">
-              {items.filter((_, i) => i % 3 === colIndex).map((item, index) => (
-                <div 
-                  key={item.id} 
-                  className="relative group overflow-hidden rounded-lg"
-                >
-                  {item.type === 'image' ? (
-                    <SkeletonImage
-                      src={toJsDelivr(item.url)}
-                      alt=""
-                      className="w-full cursor-pointer hover:opacity-90 transition-opacity rounded-lg"
-                      onClick={() => !isEditing && setLightboxIndex(items.indexOf(item))}
-                    />
-                  ) : (
-                    <video
-                      src={toJsDelivr(item.url)}
-                      className="w-full h-auto rounded-lg bg-primary/5"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                    />
-                  )}
-                  {/* 删除按钮 */}
-                  {isEditing && (
-                    <>
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white text-xs flex items-center justify-center hover:bg-red-600 transition-colors rounded"
-                      >
-                        ×
-                      </button>
-                      {/* 显示 URL */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/80 text-white text-[10px] p-2 truncate">
-                        {item.url.split('/').pop()}
-                      </div>
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Lightbox */}
-      {lightboxIndex !== null && items.length > 0 && createPortal(
-        <div
-          className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center cursor-pointer"
-          onClick={() => setLightboxIndex(null)}
-        >
-          <img src={toJsDelivr(items[lightboxIndex]?.url || '')} className="max-w-full max-h-full" alt="" referrerPolicy="no-referrer" />
-        </div>,
-        document.body
-      )}
-    </div>
-  );
 };
 
 export const PortfolioSection = React.memo<PortfolioSectionProps>(({ 
@@ -442,6 +226,33 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
       setSelectedProjectId(null);
     }
   }, [location.pathname, language]);
+
+  // GitHub Star 数缓存
+  const [githubStars, setGithubStars] = useState<Record<string, number>>({});
+  useEffect(() => {
+    // 收集所有有 githubUrl 的项目
+    const urls = PROJECTS[language]
+      .filter(p => p.githubUrl)
+      .map(p => p.githubUrl!);
+    const unique = [...new Set(urls)];
+    unique.forEach(url => {
+      const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
+      if (!match) return;
+      const [, owner, repo] = match;
+      const key = `${owner}/${repo}`;
+      if (githubStars[key] !== undefined) return;
+      fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+        headers: { 'Accept': 'application/vnd.github.v3+json' }
+      })
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data?.stargazers_count != null) {
+            setGithubStars(prev => ({ ...prev, [key]: data.stargazers_count }));
+          }
+        })
+        .catch(() => {});
+    });
+  }, [language]);
 
   // 选择项目时更新 URL
   const handleSelectProject = (projectId: string | null) => {
@@ -727,8 +538,8 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
           </div>
         ))}
 
-        {/* 摄影作品图库（兼容旧数据） */}
-        {project.category === Category.PHOTO && currentGallery.length > 0 && (
+        {/* 作品图库 */}
+        {currentGallery.length > 0 && (
           <div className="border-t border-primary/10 pt-6 mt-6 animate-fade-in" style={{ animationDelay: '0.3s' }}>
             <h3 className="text-lg font-bold text-primary mb-4">
               {language === 'zh' ? '作品图库' : 'Gallery'}
@@ -823,27 +634,9 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
             })}
           </nav>
           
-          {/* 日常练习 - 置底 */}
-          <div className="px-4 py-2 border-t border-primary/10">
-            <button 
-              onClick={() => { handleFilterChange(Category.PRACTICE); }}
-              className="w-full flex items-center gap-2 py-2.5 text-left transition-colors group"
-            >
-              <span className={`text-xs transition-colors ${filter === Category.PRACTICE ? 'text-primary' : 'text-primary/30'}`}>
-                {filter === Category.PRACTICE ? '●' : '○'}
-              </span>
-              <span className={`flex-1 text-sm tracking-tight transition-colors ${filter === Category.PRACTICE ? 'font-bold text-primary' : 'text-primary/60 group-hover:text-primary'}`}>
-                {language === 'zh' ? '日常练习' : 'Practice'}
-              </span>
-              <span className={`text-xs tabular-nums transition-colors ${filter === Category.PRACTICE ? 'text-primary' : 'text-primary/30'}`}>
-                {PRACTICE_ITEMS.length}
-              </span>
-            </button>
-          </div>
-          
           {/* 底部统计 */}
           <div className="px-4 py-3 border-t border-primary/10 text-xs text-primary/40 font-medium tracking-wide">
-            {currentProjects.filter(p => p.category !== Category.PRACTICE).length} {language === 'zh' ? '个作品' : 'Works'}
+            {currentProjects.length} {language === 'zh' ? '个作品' : 'Works'}
           </div>
         </aside>,
         document.body
@@ -882,12 +675,10 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
                 <>
                   <span className="text-primary/30">/</span>
                   <span className="text-primary font-bold">
-                    {filter === Category.PRACTICE 
-                      ? (language === 'zh' ? '日常练习' : 'Practice')
-                      : FILTER_ITEMS.find(f => f.id === filter)?.[language === 'zh' ? 'labelZh' : 'labelEn']}
+                    {FILTER_ITEMS.find(f => f.id === filter)?.[language === 'zh' ? 'labelZh' : 'labelEn']}
                   </span>
                   <span className="text-primary/30 ml-1">
-                    ({filter === Category.PRACTICE ? PRACTICE_ITEMS.length : filteredProjects.length})
+                    ({filteredProjects.length})
                   </span>
                 </>
               )}
@@ -986,9 +777,20 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
                       href={selectedProject.githubUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="px-3 py-1.5 text-xs border border-primary/20 text-primary/70 hover:bg-primary hover:text-cream transition-colors"
+                      className="px-3 py-1.5 text-xs border border-primary/20 text-primary/70 hover:bg-primary hover:text-cream transition-colors inline-flex items-center gap-1.5"
                     >
-                      GitHub →
+                      GitHub
+                      {(() => {
+                        const m = selectedProject.githubUrl!.match(/github\.com\/([^/]+)\/([^/]+)/);
+                        const stars = m ? githubStars[`${m[1]}/${m[2]}`] : undefined;
+                        return stars != null ? (
+                          <span className="inline-flex items-center gap-0.5">
+                            <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"/></svg>
+                            {stars}
+                          </span>
+                        ) : null;
+                      })()}
+                      →
                     </a>
                   )}
                   {selectedProject.videoLinkUrl && (
@@ -1066,15 +868,13 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
                 /* 列表页：显示标题和数量 */
                 <>
                   <span className="text-sm font-black text-primary tracking-tight uppercase">
-                    {filter === Category.PRACTICE 
-                      ? (language === 'zh' ? '日常练习' : 'Practice')
-                      : filter === 'All' 
+                    {filter === 'All' 
                         ? (language === 'zh' ? '作品' : 'Work')
                         : FILTER_ITEMS.find(f => f.id === filter)?.[language === 'zh' ? 'labelZh' : 'labelEn']}
                   </span>
                   <div className="flex items-center gap-1 -mr-2">
                     <span className="text-xs text-primary/40 mr-1">
-                      {filter === Category.PRACTICE ? PRACTICE_ITEMS.length : filteredProjects.length} {language === 'zh' ? '个' : ''}
+                      {filteredProjects.length} {language === 'zh' ? '个' : ''}
                     </span>
                     {/* 右侧图标 */}
                     <button
@@ -1100,13 +900,11 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
           {!selectedProject && (
             <div className="border-b-2 border-primary overflow-x-auto no-scrollbar">
               <div className="flex">
-                {[...FILTER_ITEMS, { id: Category.PRACTICE, labelZh: '日常练习', labelEn: 'Practice', urlPath: 'practice' }].map((item) => {
+                {FILTER_ITEMS.map((item) => {
                   const isActive = filter === item.id;
                   const count = item.id === 'All' 
                     ? currentProjects.length 
-                    : item.id === Category.PRACTICE 
-                      ? PRACTICE_ITEMS.length 
-                      : currentProjects.filter(p => p.category === item.id).length;
+                    : currentProjects.filter(p => p.category === item.id).length;
                   return (
                     <button 
                       key={item.id} 
@@ -1143,16 +941,17 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
             />
           ) : selectedProject ? (
             <ProjectDetail project={selectedProject} />
-          ) : filter === Category.PRACTICE ? (
-            /* 日常练习展示区 */
-            <PracticeGallery language={language} editorMode={editorMode} />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {filteredProjects.map((project, index) => (
-                <div 
+                <motion.div 
                   key={project.id} 
-                  className="group cursor-pointer bg-cream border-2 border-primary/10 hover:border-primary transition-all duration-300 relative overflow-hidden animate-fade-in" 
-                  style={{ animationDelay: `${index * 0.05}s` }}
+                  className="group cursor-pointer bg-cream border-2 border-primary/10 hover:border-primary transition-colors duration-300 relative overflow-hidden" 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.5, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+                  whileHover={{ y: -4, transition: { duration: 0.2, type: "spring", stiffness: 300, damping: 20 } }}
                   onClick={() => handleSelectProject(project.id)}
                 >
                   {/* 编号标签 */}
@@ -1200,7 +999,7 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
                       <span className="text-xs font-mono">→</span>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}

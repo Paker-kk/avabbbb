@@ -5,20 +5,12 @@ export const CATEGORY_LABELS: Record<Language, Record<string, string>> = {
   zh: {
     'All': '全部',
     'Motion': '动态影像',
-    'UI Design': '交互设计',
-    'Graphic Design': '平面设计',
-    'Photography': '静态摄影',
-    'Development': '应用开发',
-    'Practice': '日常练习'
+    'Development': '应用开发'
   },
   en: {
     'All': 'All',
     'Motion': 'Media',
-    'UI Design': 'UI/UX',
-    'Graphic Design': 'Graphic',
-    'Photography': 'Photo',
-    'Development': 'Dev',
-    'Practice': 'Practice'
+    'Development': 'Dev'
   }
 };
 

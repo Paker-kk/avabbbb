@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { Language, Category } from '../types';
 import { ArrowDown, RefreshCw, Bot } from 'lucide-react';
 
@@ -97,40 +98,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   // 用于顶部标题栏显示的项目
   const randomProject = currentProject;
 
-  // 计算右侧区域宽度，使图片区域保持正方形
-  const mainContentRef = useRef<HTMLDivElement>(null);
-  const [rightColumnWidth, setRightColumnWidth] = useState<number | null>(null);
-
-  useEffect(() => {
-    const calculateWidth = () => {
-      if (mainContentRef.current) {
-        // 获取主内容区域的高度（减去底部标签区域的高度约70px）
-        const availableHeight = mainContentRef.current.clientHeight - 70;
-        if (availableHeight > 0) {
-          setRightColumnWidth(availableHeight);
-        }
-      }
-    };
-
-    // 首次渲染后立即计算
-    calculateWidth();
-    
-    // 使用 requestAnimationFrame 确保 DOM 完全渲染后再计算一次
-    const rafId = requestAnimationFrame(() => {
-      calculateWidth();
-    });
-    
-    // 再延迟一帧确保布局稳定
-    const timeoutId = setTimeout(calculateWidth, 100);
-
-    window.addEventListener('resize', calculateWidth);
-    return () => {
-      window.removeEventListener('resize', calculateWidth);
-      cancelAnimationFrame(rafId);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
   return (
     <div className="min-h-[100dvh] md:h-[100dvh] w-full bg-cream flex flex-col overflow-hidden relative">
 
@@ -167,8 +134,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
         {/* 右侧 - 项目标题栏（黑色，hover变红） */}
         <div 
-          className="hidden md:flex bg-primary hover:bg-[#E63946] transition-colors px-4 py-4 items-center justify-between cursor-pointer group border-l-2 border-primary"
-          style={{ width: rightColumnWidth ? `${rightColumnWidth}px` : '33.333%' }}
+          className="hidden md:flex md:w-2/5 lg:w-1/3 flex-shrink-0 bg-primary hover:bg-[#E63946] transition-colors px-4 py-4 items-center justify-between cursor-pointer group border-l-2 border-primary"
           onClick={() => randomProject && onProjectSelect?.(randomProject.id)}
         >
           <span className="text-cream text-sm font-bold truncate flex-1 mr-2">
@@ -181,18 +147,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Main Content Area */}
-      <div ref={mainContentRef} className="flex-1 flex flex-col md:flex-row relative z-10 min-h-0">
+      <div className="flex-1 flex flex-col md:flex-row relative z-10 min-h-0">
         
         {/* Left Column - Main Title */}
         <div className="flex-1 flex flex-col justify-between px-6 py-4 md:py-8 min-h-0">
           
-          {/* Skills List - 移动端和桌面端都显示 */}
-          <div className="space-y-1">
+          {/* Skills List - 移动端和桌面端都显示，Motion variants 级联动画 */}
+          <motion.div
+            className="space-y-1"
+            initial="hidden"
+            animate="show"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }}
+          >
             {data.heroItems.map((item, index) => (
-              <div 
+              <motion.div 
                 key={index}
-                className="flex items-baseline gap-2 animate-fade-in"
-                style={{ animationDelay: `${0.2 + index * 0.1}s` }}
+                className="flex items-baseline gap-2"
+                variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } } }}
               >
                 <span className="text-[10px] font-mono text-primary/30 w-6">0{index + 1}</span>
                 <span 
@@ -204,42 +175,99 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <span className="text-[10px] text-primary/30 font-light hidden sm:inline">
                   {item.annotation}
                 </span>
-              </div>
+              </motion.div>
             ))}
-          </div>
-          
-          {/* Bottom - Main Title - 带淡入 */}
+          </motion.div>
+
+          {/* Mobile Featured Project - 移动端精选作品卡片，弹性填充中间空间 */}
+          {currentProject && (
+            <div className="md:hidden flex-1 py-3 min-h-0">
+              <div 
+                className="w-full h-full bg-primary relative overflow-hidden cursor-pointer active:opacity-90 transition-opacity"
+                onClick={() => onProjectSelect?.(currentProject.id)}
+              >
+                {currentProject.image ? (
+                  <img 
+                    src={toJsDelivr(currentProject.image)} 
+                    alt={currentProject.title}
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-cream/20 text-6xl font-black">
+                    {currentProject.title.charAt(0)}
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-primary/20" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <span className="text-[10px] font-mono text-cream/60 uppercase tracking-widest">
+                    {language === 'zh' ? '精选项目' : 'Featured'}
+                  </span>
+                  <h3 className="text-cream font-black text-lg mt-1">{currentProject.title}</h3>
+                </div>
+                {projectsWithImage.length > 1 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); refreshProject(); }}
+                    className="absolute top-3 right-3 w-8 h-8 bg-cream/20 text-cream flex items-center justify-center backdrop-blur-sm"
+                  >
+                    <RefreshCw size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Bottom - Main Title - Motion 入场动画 */}
           <div className="mt-auto">
-            <div className="flex items-end gap-4 mb-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            <motion.div
+              className="flex items-end gap-4 mb-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               <div className="w-6 h-6 md:w-8 md:h-8 bg-[#E63946]" />
               <span className="text-[10px] font-mono text-primary/40 uppercase tracking-widest">Creative Developer</span>
-            </div>
-            <h1 className="text-[18vw] md:text-[12vw] lg:text-[9vw] font-black text-primary leading-[0.85] tracking-tighter animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              AVABBBB
+            </motion.div>
+            <h1 className="text-[18vw] md:text-[12vw] lg:text-[9vw] font-black text-primary leading-[0.85] tracking-tighter flex overflow-hidden">
+              {"AVABBBB".split("").map((char, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: "100%" }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.04, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="inline-block"
+                >
+                  {char}
+                </motion.span>
+              ))}
             </h1>
-            <div className="flex items-center gap-4 mt-2 md:mt-3">
+            <motion.div
+              className="flex items-center gap-4 mt-2 md:mt-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+            >
               <div className="flex-1 h-px bg-primary/20" />
               <span className="text-[10px] font-mono text-primary/40">{data.years}</span>
-            </div>
+            </motion.div>
           </div>
         </div>
         
         {/* Right Column - Visual Block - 静态结构 */}
-        <div 
-          className="hidden md:flex flex-col border-l-2 border-primary"
-          style={{ width: rightColumnWidth ? `${rightColumnWidth}px` : '33.333%' }}
-        >
+        <div className="hidden md:flex md:w-2/5 lg:w-1/3 flex-shrink-0 flex-col border-l-2 border-primary">
           
           {/* Project Cover Image - 填满可用空间 */}
           <div className="flex-1 bg-primary relative overflow-hidden group/cover">
             {/* 新图片（底层，始终显示） */}
             {currentProject?.image && (
-              <img 
+              <motion.img 
                 src={toJsDelivr(currentProject.image)} 
                 alt={currentProject.title}
                 referrerPolicy="no-referrer"
-                className="absolute inset-0 w-full h-full object-cover animate-fade-in"
-                style={{ animationDelay: '0.4s' }}
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
               />
             )}
             {/* 旧图片（上层，渐隐） */}
@@ -267,17 +295,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="text-[10px] font-mono text-primary/40 uppercase tracking-widest mb-2">
               {language === 'zh' ? '专注领域' : 'Focus Areas'}
             </div>
-            <div className="flex flex-wrap gap-2">
+            <motion.div
+              className="flex flex-wrap gap-2"
+              initial="hidden"
+              animate="show"
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.6 } } }}
+            >
               {['MEDIA', 'UI/UX', 'DEV'].map((tag, i) => (
-                <span 
+                <motion.span 
                   key={i} 
-                  className="text-[10px] font-bold text-primary px-2 py-1 border border-primary/20 animate-fade-in"
-                  style={{ animationDelay: `${0.6 + i * 0.1}s` }}
+                  className="text-[10px] font-bold text-primary px-2 py-1 border border-primary/20"
+                  variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
                 >
                   {tag}
-                </span>
+                </motion.span>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -293,10 +326,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
 
         {/* Black CTA Bar - 带淡入 */}
-        <div 
+        <motion.div 
           onClick={onNavigate}
-          className="bg-primary text-cream px-6 pt-5 pb-9 md:py-6 flex justify-between items-center cursor-pointer hover:bg-[#E63946] transition-colors group animate-fade-in"
-          style={{ animationDelay: '0.5s' }}
+          className="bg-primary text-cream px-6 pt-5 pb-9 md:py-6 flex justify-between items-center cursor-pointer hover:bg-[#E63946] transition-colors group"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <div className="flex items-center gap-4">
             <span className="text-[10px] font-mono text-cream/40 group-hover:text-cream/60">→</span>
@@ -308,10 +343,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <span className="text-[10px] font-mono text-cream/40 hidden md:block">SCROLL</span>
             <ArrowDown size={20} className="group-hover:translate-y-1 transition-transform" />
           </div>
-        </div>
-        
-        {/* 移动端底部导航栏占位 */}
-        <div className="h-12 md:hidden bg-cream" />
+        </motion.div>
+
+        {/* 移动端底部导航栏占位 - 为底部TabBar留出安全间距 */}
+        <div className="h-16 md:hidden bg-cream" />
 
       </div>
     </div>

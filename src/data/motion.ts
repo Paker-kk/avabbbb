@@ -5,7 +5,7 @@ export const MOTION_DATA: Project[] = [
   "id": "v1",
   "common": {
     "category": "Motion",
-    "image": "",
+    "image": "https://i1.hdslb.com/bfs/archive/cc982f213a09e1257e341a4fd79820b28ab4b82f.jpg",
     "bilibiliId": "BV1pS411K7bF",
     "websiteUrl": "https://www.bilibili.com/video/BV1pS411K7bF/",
     "date": "2025"

@@ -16,25 +16,21 @@ export interface HomeContent {
 export const HOME_DATA: Record<Language, HomeContent> = {
   zh: {
     heroItems: [
-      { text: "AIGC开发", annotation: "（创意工具）", category: Category.DEV },
-      { text: "视频创作", annotation: "（二创/特效）", category: Category.VIDEO },
-      { text: "软件工程", annotation: "（本职工作）", category: Category.DEV },
-      { text: "AI短剧", annotation: "（AVG探索中）", category: null },
-      { text: "社交媒体", annotation: "（小红书/B站）", category: null }
+      { text: "AIGC产品研发", annotation: "（创意工具开发）", category: Category.DEV },
+      { text: "创意视频制作", annotation: "（二创/特效）", category: Category.VIDEO },
+      { text: "开源项目", annotation: "（Flovart）", category: Category.DEV }
     ],
-    intro: "AI AVG制作探索中。|华南师范大学软件工程毕业，央企AIGC产研工程师，业余创作者。",
+    intro: "AIGC创意工程师，用代码和视频讲故事。|华南师范大学·软件工程 | 央企AIGC产研",
     selectedWorks: "精选作品",
     years: "[ 2025 — NOW ]"
   },
   en: {
     heroItems: [
-      { text: "AIGC Dev", annotation: "(Creative Tools)", category: Category.DEV },
+      { text: "AIGC R&D", annotation: "(Creative Tools)", category: Category.DEV },
       { text: "Video Creation", annotation: "(Fan-made/VFX)", category: Category.VIDEO },
-      { text: "Software Eng", annotation: "(Day Job)", category: Category.DEV },
-      { text: "AI AVG", annotation: "(Exploring)", category: null },
-      { text: "Social Media", annotation: "(XHS/Bilibili)", category: null }
+      { text: "Open Source", annotation: "(Flovart)", category: Category.DEV }
     ],
-    intro: "Exploring AI AVG production. | SCNU Software Engineering graduate, AIGC R&D engineer at a state-owned enterprise, indie creator.",
+    intro: "AIGC Creative Engineer. Code & video storyteller. | SCNU Software Engineering | State-owned Enterprise AIGC R&D",
     selectedWorks: "Selected Works",
     years: "[ 2025 — NOW ]"
   }

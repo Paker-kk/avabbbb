@@ -1,6 +1,6 @@
 // 解密工具 - 在浏览器端解密数据
 
-const PASSWORD = 'ly-young-2024';
+const PASSWORD = 'lkf';
 
 interface EncryptedPayload {
   salt: string;

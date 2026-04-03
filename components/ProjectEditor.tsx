@@ -48,10 +48,7 @@ interface ProjectEditorProps {
 
 const CATEGORY_OPTIONS = [
   { value: 'Motion', labelZh: '动态影像', labelEn: 'Media' },
-  { value: 'UI Design', labelZh: '交互设计', labelEn: 'UI Design' },
-  { value: 'Graphic Design', labelZh: '平面设计', labelEn: 'Graphic Design' },
   { value: 'Development', labelZh: '应用开发', labelEn: 'Development' },
-  { value: 'Photography', labelZh: '静态摄影', labelEn: 'Photography' },
 ];
 
 // 创建空白项目模板

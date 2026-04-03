@@ -26,10 +26,10 @@ export function toJsDelivr(url: string): string {
     return cleanUrl;
   }
   
-  // 如果是本地路径（如 /MakingLovart.png），加上 base 前缀
+  // 如果是本地路径（如 /Flovart.png），加上 base 前缀
   if (cleanUrl.startsWith('/')) {
     const base = import.meta.env.BASE_URL || '/';
-    // 避免路径重复拼接（如 /avabbbb/ + /MakingLovart.png）
+    // 避免路径重复拼接（如 /avabbbb/ + /Flovart.png）
     return base.endsWith('/') ? base + cleanUrl.slice(1) : base + cleanUrl;
   }
   

@@ -31,7 +31,7 @@ interface ArticleEditorProps {
 }
 
 const CATEGORY_OPTIONS = [
-  { value: ArticleCategory.MAKINGLOVART, labelZh: 'MakingLovart', labelEn: 'MakingLovart' },
+  { value: ArticleCategory.FLOVART, labelZh: 'Flovart', labelEn: 'Flovart' },
   { value: ArticleCategory.VIDEOCREATION, labelZh: '视频创作', labelEn: 'Video Creation' },
 ];
 
@@ -39,7 +39,7 @@ const CATEGORY_OPTIONS = [
 export const createEmptyArticle = (id: string): EditableArticle => ({
   id,
   common: {
-    category: ArticleCategory.MAKINGLOVART,
+    category: ArticleCategory.FLOVART,
     link: '',
     coverImage: '',
     date: new Date().toISOString().slice(0, 10),

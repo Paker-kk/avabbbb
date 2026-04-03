@@ -4,16 +4,12 @@ export type Language = 'zh' | 'en';
 export enum Category {
   ALL = 'All',
   VIDEO = 'Motion',
-  UI = 'UI Design',
-  GRAPHIC = 'Graphic Design',
-  PHOTO = 'Photography',
   DEV = 'Development',
-  PRACTICE = 'Practice',
   ARTICLE = 'Article'
 }
 
 export enum ArticleCategory {
-  MAKINGLOVART = 'MakingLovart',
+  FLOVART = 'Flovart',
   VIDEOCREATION = 'VideoCreation',
 }
 
