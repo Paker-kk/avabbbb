@@ -1,13 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Bot } from 'lucide-react';
+import React from 'react';
+import { Bot, Mail } from 'lucide-react';
 import { Language } from '../types';
-
-// 自定义中英翻译图标（与 App.tsx 保持一致）
-const TranslateIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 1024 1024" fill="currentColor" className={className}>
-    <path d="M608 416h288c35.36 0 64 28.48 64 64v416c0 35.36-28.48 64-64 64H480c-35.36 0-64-28.48-64-64v-288H128c-35.36 0-64-28.48-64-64V128c0-35.36 28.48-64 64-64h416c35.36 0 64 28.48 64 64v288z m0 64v64c0 35.36-28.48 64-64 64h-64v256.032c0 17.664 14.304 31.968 31.968 31.968H864a31.968 31.968 0 0 0 31.968-31.968V512a31.968 31.968 0 0 0-31.968-31.968H608zM128 159.968V512c0 17.664 14.304 31.968 31.968 31.968H512a31.968 31.968 0 0 0 31.968-31.968V160A31.968 31.968 0 0 0 512.032 128H160A31.968 31.968 0 0 0 128 159.968z m64 244.288V243.36h112.736V176h46.752c6.4 0.928 9.632 1.824 9.632 2.752a10.56 10.56 0 0 1-1.376 4.128c-2.752 7.328-4.128 16.032-4.128 26.112v34.368h119.648v156.768h-50.88v-20.64h-68.768v118.272H306.112v-118.272H238.752v24.768H192z m46.72-122.368v60.48h67.392V281.92H238.752z m185.664 60.48V281.92h-68.768v60.48h68.768z m203.84 488H576L668.128 576h64.64l89.344 254.4h-54.976l-19.264-53.664h-100.384l-19.232 53.632z m33.024-96.256h72.864l-34.368-108.608h-1.376l-37.12 108.608zM896 320h-64a128 128 0 0 0-128-128V128a192 192 0 0 1 192 192zM128 704h64a128 128 0 0 0 128 128v64a192 192 0 0 1-192-192z" />
-  </svg>
-);
+import { TranslateIcon } from './TranslateIcon';
 
 interface ResumeSectionProps {
   language: Language;
@@ -15,34 +9,37 @@ interface ResumeSectionProps {
   onToggleLanguage: () => void;
 }
 
-// 简历 PDF 路径（放在 public/ 目录下）
-// 英文版暂缺时 fallback 到中文版
-const BASE = import.meta.env.BASE_URL;
-const RESUME_PDF: Record<Language, string> = {
-  zh: `${BASE}resume-zh.pdf`,
-  en: `${BASE}resume-en.pdf`,
+const RESUME_TEXT = {
+  zh: {
+    title: '简历',
+    heading: '获取我的简历',
+    desc: '为保护个人隐私，简历不在线公开展示。',
+    action: '如需我的完整简历，请通过以下方式联系：',
+    emailLabel: '发送邮件获取',
+    skills: ['AIGC 产品研发', '创意视频制作', '全栈开发', '开源项目维护'],
+    highlights: [
+      { label: '教育', value: '华南师范大学 · 软件工程' },
+      { label: '方向', value: 'AIGC 创意技术产研' },
+      { label: '开源', value: 'Flovart — AI 绘画协作白板' },
+    ],
+  },
+  en: {
+    title: 'Resume',
+    heading: 'Get My Resume',
+    desc: 'Resume is not publicly displayed to protect personal privacy.',
+    action: 'For my full resume, please reach out via:',
+    emailLabel: 'Email to request',
+    skills: ['AIGC R&D', 'Creative Video', 'Full-Stack Dev', 'Open Source'],
+    highlights: [
+      { label: 'Education', value: 'SCNU · Software Engineering' },
+      { label: 'Focus', value: 'AIGC Creative Tech R&D' },
+      { label: 'Open Source', value: 'Flovart — AI Drawing Whiteboard' },
+    ],
+  },
 };
-const RESUME_FALLBACK = `${BASE}resume-zh.pdf`;
 
 export const ResumeSection: React.FC<ResumeSectionProps> = ({ language, onOpenAiChat, onToggleLanguage }) => {
-  const [pdfError, setPdfError] = useState(false);
-  const [useFallback, setUseFallback] = useState(false);
-  const pdfUrl = useFallback ? RESUME_FALLBACK : RESUME_PDF[language];
-
-  // 检查目标 PDF 是否存在，不存在则 fallback 到中文版
-  useEffect(() => {
-    setUseFallback(false);
-    setPdfError(false);
-    fetch(RESUME_PDF[language], { method: 'HEAD' })
-      .then(r => {
-        if (!r.ok && language === 'en') setUseFallback(true);
-        if (!r.ok && language === 'zh') setPdfError(true);
-      })
-      .catch(() => {
-        if (language === 'en') setUseFallback(true);
-        else setPdfError(true);
-      });
-  }, [language]);
+  const t = RESUME_TEXT[language];
 
   return (
     <div className="min-h-[100dvh] md:h-[100dvh] w-full bg-cream flex flex-col overflow-hidden relative">
@@ -57,9 +54,8 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ language, onOpenAi
       <div className="flex border-b-2 border-primary relative z-10 flex-shrink-0">
         <div className="flex-1 pt-4 pb-3 md:pt-6 md:pb-4 px-4 md:px-6 flex items-center justify-between">
           <span className="text-sm font-black text-primary tracking-tight uppercase">
-            {language === 'zh' ? '简历' : 'Resume'}
+            {t.title}
           </span>
-          {/* 移动端右侧图标 */}
           <div className="md:hidden flex items-center gap-1 -mr-2">
             <button
               onClick={onOpenAiChat}
@@ -79,68 +75,71 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ language, onOpenAi
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col relative z-10 min-h-0">
-        {/* Download Bar */}
-        <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-primary/10 bg-cream/80 backdrop-blur-sm">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[10px] text-primary/30 uppercase tracking-widest">
-              PDF
-            </span>
-            <span className="text-xs text-primary/60">
-              {language === 'zh' ? '在线预览 · 点击下方按钮下载' : 'Online preview · Click button below to download'}
-            </span>
+      <div className="flex-1 flex flex-col md:flex-row relative z-10 min-h-0">
+        {/* Left: Info */}
+        <div className="flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-20 py-8 md:py-0">
+          <div className="max-w-md">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-6 h-6 bg-[#E63946]" />
+              <span className="text-[10px] font-mono text-primary/40 uppercase tracking-widest">
+                CV / Resume
+              </span>
+            </div>
+
+            <h1 className="text-3xl md:text-4xl font-black text-primary leading-tight tracking-tight mb-4">
+              {t.heading}
+            </h1>
+
+            <p className="text-sm text-primary/60 mb-2">{t.desc}</p>
+            <p className="text-sm text-primary/60 mb-8">{t.action}</p>
+
+            <a
+              href="mailto:921693422@qq.com?subject=Request%20Resume"
+              className="inline-flex items-center gap-3 px-5 py-3 bg-primary text-cream font-bold text-sm hover:bg-[#E63946] transition-colors"
+            >
+              <Mail size={16} />
+              {t.emailLabel}
+              <span className="ml-4 font-mono text-[10px] text-cream/50">921693422@qq.com</span>
+            </a>
           </div>
-          <a
-            href={pdfUrl}
-            download
-            className="px-4 py-1.5 text-xs font-bold border-2 border-primary text-primary hover:bg-primary hover:text-cream transition-colors uppercase tracking-wider"
-          >
-            {language === 'zh' ? '下载 PDF' : 'Download'}
-          </a>
         </div>
 
-        {/* PDF Viewer */}
-        <div className="flex-1 min-h-0">
-          {pdfError ? (
-            <div className="flex flex-col items-center justify-center h-full gap-6 px-4">
-              <div className="text-center space-y-3">
-                <div className="text-6xl font-black text-primary/10">PDF</div>
-                <p className="text-sm text-primary/50">
-                  {language === 'zh' 
-                    ? '简历文件暂未上传，请将 PDF 文件放入 public/ 目录' 
-                    : 'Resume file not yet uploaded. Place PDF in public/ directory'}
-                </p>
-                <p className="text-xs text-primary/30 font-mono">
-                  public/resume-zh.pdf · public/resume-en.pdf
-                </p>
-              </div>
-              <a
-                href={pdfUrl}
-                download
-                className="px-6 py-2.5 text-sm font-bold border-2 border-primary text-primary hover:bg-primary hover:text-cream transition-colors"
-              >
-                {language === 'zh' ? '尝试下载' : 'Try Download'}
-              </a>
+        {/* Right: Highlights */}
+        <div className="md:w-2/5 lg:w-1/3 flex-shrink-0 border-t-2 md:border-t-0 md:border-l-2 border-primary flex flex-col">
+          <div className="p-6 border-b border-primary/10">
+            <div className="text-[10px] font-mono text-primary/40 uppercase tracking-widest mb-3">
+              {language === 'zh' ? '核心技能' : 'Core Skills'}
             </div>
-          ) : (
-            <iframe
-              src={pdfUrl}
-              className="w-full h-full border-0"
-              title={language === 'zh' ? '简历预览' : 'Resume Preview'}
-              onError={() => setPdfError(true)}
-            >
-              <p>
-                {language === 'zh' 
-                  ? '您的浏览器不支持 PDF 预览。' 
-                  : 'Your browser does not support PDF preview.'}
-                <a href={pdfUrl} download className="underline text-[#E63946]">
-                  {language === 'zh' ? '点击下载' : 'Click to download'}
-                </a>
-              </p>
-            </iframe>
-          )}
+            <div className="flex flex-wrap gap-2">
+              {t.skills.map((skill, i) => (
+                <span key={i} className="text-[10px] font-bold text-primary px-2 py-1 border border-primary/20">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-1 flex flex-col">
+            {t.highlights.map((item, i) => (
+              <div key={i} className="flex items-start gap-4 px-6 py-4 border-b border-primary/10 last:border-b-0">
+                <span className="font-mono text-[10px] text-primary/30 w-4 pt-0.5">0{i + 1}</span>
+                <div>
+                  <p className="text-[10px] font-mono text-primary/40 uppercase tracking-wider mb-1">{item.label}</p>
+                  <p className="text-sm font-bold text-primary">{item.value}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-6 border-t border-primary/10">
+            <div className="text-[10px] font-mono text-primary/20 uppercase tracking-widest">
+              {language === 'zh' ? '隐私优先 · 按需提供' : 'Privacy First · Available on Request'}
+            </div>
+          </div>
         </div>
       </div>
+
+      <div className="h-16 md:hidden bg-cream" />
     </div>
   );
 };

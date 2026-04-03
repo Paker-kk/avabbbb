@@ -19,3 +19,4 @@ build/
 # Sensitive data
 src/data/education.secret.json
 src/data/education.secret.ts
+public/resume-*.pdf

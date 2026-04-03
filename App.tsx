@@ -10,19 +10,7 @@ const TimelineSection = lazy(() => import('./components/TimelineSection').then(m
 const ResumeSection = lazy(() => import('./components/ResumeSection').then(m => ({ default: m.ResumeSection })));
 const AiChat = lazy(() => import('./components/AiChat').then(m => ({ default: m.AiChat })));
 import { Mail, Github, Bot } from 'lucide-react';
-
-// 自定义中英翻译图标
-const TranslateIcon: React.FC<{ size?: number; className?: string }> = ({ size = 16, className = '' }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 1024 1024"
-    fill="currentColor"
-    className={className}
-  >
-    <path d="M608 416h288c35.36 0 64 28.48 64 64v416c0 35.36-28.48 64-64 64H480c-35.36 0-64-28.48-64-64v-288H128c-35.36 0-64-28.48-64-64V128c0-35.36 28.48-64 64-64h416c35.36 0 64 28.48 64 64v288z m0 64v64c0 35.36-28.48 64-64 64h-64v256.032c0 17.664 14.304 31.968 31.968 31.968H864a31.968 31.968 0 0 0 31.968-31.968V512a31.968 31.968 0 0 0-31.968-31.968H608zM128 159.968V512c0 17.664 14.304 31.968 31.968 31.968H512a31.968 31.968 0 0 0 31.968-31.968V160A31.968 31.968 0 0 0 512.032 128H160A31.968 31.968 0 0 0 128 159.968z m64 244.288V243.36h112.736V176h46.752c6.4 0.928 9.632 1.824 9.632 2.752a10.56 10.56 0 0 1-1.376 4.128c-2.752 7.328-4.128 16.032-4.128 26.112v34.368h119.648v156.768h-50.88v-20.64h-68.768v118.272H306.112v-118.272H238.752v24.768H192z m46.72-122.368v60.48h67.392V281.92H238.752z m185.664 60.48V281.92h-68.768v60.48h68.768z m203.84 488H576L668.128 576h64.64l89.344 254.4h-54.976l-19.264-53.664h-100.384l-19.232 53.632z m33.024-96.256h72.864l-34.368-108.608h-1.376l-37.12 108.608zM896 320h-64a128 128 0 0 0-128-128V128a192 192 0 0 1 192 192zM128 704h64a128 128 0 0 0 128 128v64a192 192 0 0 1-192-192z" />
-  </svg>
-);
+import { TranslateIcon } from './components/TranslateIcon';
 import { CONTACT_DATA } from './src/data/contact';
 import { PROJECTS } from './constants';
 import { toJsDelivr } from './src/utils/cdn';
@@ -347,7 +335,7 @@ function AppContent() {
                   {/* B站 */}
                   <div 
                     className="flex items-center justify-between px-4 py-3 cursor-pointer active:bg-primary/5 transition-colors"
-                    onClick={() => window.open('https://space.bilibili.com/', '_blank')}
+                    onClick={() => window.open('https://space.bilibili.com/1314275776', '_blank')}
                   >
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-[10px] text-primary/30 w-4">04</span>
@@ -514,7 +502,7 @@ function AppContent() {
                   <div 
                     className="group border-b border-primary/10 py-5 px-8 flex items-center justify-between cursor-pointer hover:bg-[#00A1D6]/5 transition-all duration-300 animate-fade-in"
                     style={{ animationDelay: '0.5s' }}
-                    onClick={() => window.open('https://space.bilibili.com/', '_blank')}
+                    onClick={() => window.open('https://space.bilibili.com/1314275776', '_blank')}
                   >
                     <div className="flex items-center gap-4">
                       <span className="font-mono text-[10px] text-primary/30">04</span>
@@ -645,10 +633,10 @@ function AppContent() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15, ease: 'easeInOut' }}
+            initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <Suspense fallback={<div className="min-h-screen bg-cream" />}>
               {renderContent()}
