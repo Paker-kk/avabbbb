@@ -3,7 +3,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 // 密钥 - 用于加密
-const PASSWORD = 'lkf';
+const PASSWORD = 'avabbbblkf';
 
 const plaintextPath = path.join(process.cwd(), 'src', 'data', 'education.secret.json');
 const outPath = path.join(process.cwd(), 'src', 'data', 'education.encrypted.json');

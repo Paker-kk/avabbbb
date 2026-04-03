@@ -1,6 +1,6 @@
 // 解密工具 - 在浏览器端解密数据
 
-const PASSWORD = 'lkf';
+const PASSWORD = 'avabbbblkf';
 
 interface EncryptedPayload {
   salt: string;

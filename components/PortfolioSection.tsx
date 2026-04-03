@@ -227,30 +227,53 @@ export const PortfolioSection = React.memo<PortfolioSectionProps>(({
     }
   }, [location.pathname, language]);
 
-  // GitHub Star 数缓存
-  const [githubStars, setGithubStars] = useState<Record<string, number>>({});
+  // GitHub Star 数缓存（localStorage 持久化，1小时过期）
+  const STAR_CACHE_KEY = 'github_stars_cache';
+  const STAR_CACHE_TTL = 3600000; // 1 hour
+  const [githubStars, setGithubStars] = useState<Record<string, number>>(() => {
+    try {
+      const cached = localStorage.getItem(STAR_CACHE_KEY);
+      if (cached) {
+        const { data, ts } = JSON.parse(cached);
+        if (Date.now() - ts < STAR_CACHE_TTL) return data;
+      }
+    } catch {}
+    return {};
+  });
   useEffect(() => {
-    // 收集所有有 githubUrl 的项目
     const urls = PROJECTS[language]
       .filter(p => p.githubUrl)
       .map(p => p.githubUrl!);
     const unique = [...new Set(urls)];
-    unique.forEach(url => {
+    // 检查缓存是否仍有效
+    try {
+      const cached = localStorage.getItem(STAR_CACHE_KEY);
+      if (cached) {
+        const { ts } = JSON.parse(cached);
+        if (Date.now() - ts < STAR_CACHE_TTL) return;
+      }
+    } catch {}
+    const results: Record<string, number> = {};
+    Promise.all(unique.map(url => {
       const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
-      if (!match) return;
+      if (!match) return Promise.resolve();
       const [, owner, repo] = match;
       const key = `${owner}/${repo}`;
-      if (githubStars[key] !== undefined) return;
-      fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      return fetch(`https://api.github.com/repos/${owner}/${repo}`, {
         headers: { 'Accept': 'application/vnd.github.v3+json' }
       })
         .then(r => r.ok ? r.json() : null)
         .then(data => {
           if (data?.stargazers_count != null) {
-            setGithubStars(prev => ({ ...prev, [key]: data.stargazers_count }));
+            results[key] = data.stargazers_count;
           }
         })
         .catch(() => {});
+    })).then(() => {
+      if (Object.keys(results).length > 0) {
+        setGithubStars(results);
+        localStorage.setItem(STAR_CACHE_KEY, JSON.stringify({ data: results, ts: Date.now() }));
+      }
     });
   }, [language]);
 

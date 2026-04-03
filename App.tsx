@@ -1,14 +1,14 @@
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { HeroSection } from './components/HeroSection';
 import { PortfolioSection } from './components/PortfolioSection';
-import { ArticleSection } from './components/ArticleSection';
-import { TimelineSection } from './components/TimelineSection';
-import { ResumeSection } from './components/ResumeSection';
-import { AiChat } from './components/AiChat';
+const ArticleSection = lazy(() => import('./components/ArticleSection').then(m => ({ default: m.ArticleSection })));
+const TimelineSection = lazy(() => import('./components/TimelineSection').then(m => ({ default: m.TimelineSection })));
+const ResumeSection = lazy(() => import('./components/ResumeSection').then(m => ({ default: m.ResumeSection })));
+const AiChat = lazy(() => import('./components/AiChat').then(m => ({ default: m.AiChat })));
 import { Mail, Github, Bot } from 'lucide-react';
 
 // 自定义中英翻译图标
@@ -605,22 +605,24 @@ function AppContent() {
       />
 
       {/* AI Chat Modal */}
-      <AiChat 
-        isOpen={isAiChatOpen} 
-        onClose={() => setIsAiChatOpen(false)} 
-        language={language}
-        onNavigateToPortfolio={() => {
-          setPortfolioCategory('All');
-          setActiveTab('portfolio');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onNavigateToProject={(projectId) => {
-          setInitialProjectId(projectId);
-          setPortfolioCategory('All');
-          setActiveTab('portfolio');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-      />
+      <Suspense fallback={null}>
+        <AiChat 
+          isOpen={isAiChatOpen} 
+          onClose={() => setIsAiChatOpen(false)} 
+          language={language}
+          onNavigateToPortfolio={() => {
+            setPortfolioCategory('All');
+            setActiveTab('portfolio');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onNavigateToProject={(projectId) => {
+            setInitialProjectId(projectId);
+            setPortfolioCategory('All');
+            setActiveTab('portfolio');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      </Suspense>
 
       {/* 固定背景层 - 防止Portal渲染时闪烁 */}
       {(activeTab === 'portfolio' || activeTab === 'articles') && (
@@ -648,7 +650,9 @@ function AppContent() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15, ease: 'easeInOut' }}
           >
-            {renderContent()}
+            <Suspense fallback={<div className="min-h-screen bg-cream" />}>
+              {renderContent()}
+            </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>

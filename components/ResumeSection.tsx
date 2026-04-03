@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bot } from 'lucide-react';
 import { Language } from '../types';
 
@@ -16,14 +16,33 @@ interface ResumeSectionProps {
 }
 
 // 简历 PDF 路径（放在 public/ 目录下）
+// 英文版暂缺时 fallback 到中文版
+const BASE = import.meta.env.BASE_URL;
 const RESUME_PDF: Record<Language, string> = {
-  zh: `${import.meta.env.BASE_URL}resume-zh.pdf`,
-  en: `${import.meta.env.BASE_URL}resume-en.pdf`,
+  zh: `${BASE}resume-zh.pdf`,
+  en: `${BASE}resume-en.pdf`,
 };
+const RESUME_FALLBACK = `${BASE}resume-zh.pdf`;
 
 export const ResumeSection: React.FC<ResumeSectionProps> = ({ language, onOpenAiChat, onToggleLanguage }) => {
   const [pdfError, setPdfError] = useState(false);
-  const pdfUrl = RESUME_PDF[language];
+  const [useFallback, setUseFallback] = useState(false);
+  const pdfUrl = useFallback ? RESUME_FALLBACK : RESUME_PDF[language];
+
+  // 检查目标 PDF 是否存在，不存在则 fallback 到中文版
+  useEffect(() => {
+    setUseFallback(false);
+    setPdfError(false);
+    fetch(RESUME_PDF[language], { method: 'HEAD' })
+      .then(r => {
+        if (!r.ok && language === 'en') setUseFallback(true);
+        if (!r.ok && language === 'zh') setPdfError(true);
+      })
+      .catch(() => {
+        if (language === 'en') setUseFallback(true);
+        else setPdfError(true);
+      });
+  }, [language]);
 
   return (
     <div className="min-h-[100dvh] md:h-[100dvh] w-full bg-cream flex flex-col overflow-hidden relative">
